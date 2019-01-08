@@ -1,0 +1,26 @@
+.title{
+    margin: 5px 15px 0 15px;
+    padding: 0 5px 0 5px;
+    border-bottom: 1px solid #bdbdbd;
+}
+.title h1{
+    color: #a59faa;
+    font-size: 20pt;
+    margin-bottom: 5px;
+    text-align: left;
+}
+.tabs{
+    margin: 5px 5px 0 5px;
+    height: 500px;
+}
+.tab{
+    margin: 0 5px 0 5px;
+    height: 100%;
+}
+.content{
+    margin: 5px;
+}
+.content p{
+    text-align: left;
+    text-indent: 16pt;
+}

@@ -1,0 +1,21 @@
+.title{
+    background-color: white;
+    margin: 0;
+}
+.title h3{
+    color: #b3b2b2;
+    font-size: 16pt;
+    margin: 10% 0 10% 50%;
+}
+.add-button{
+    margin: 10%;
+}
+.main{
+    background-color: white;
+}
+.form{
+    margin-left: 5%;
+}
+.component{
+    background: white;
+}

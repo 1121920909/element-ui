@@ -1,0 +1,156 @@
+export default (type)=>{
+    if (type === 'course'){
+        return [
+            {
+                id:0,
+                name:'ERP',
+                hour:8,
+                credit:4,
+                tool:'SAP ERP或金蝶K/3',
+                exam:'上机操作、实验报告',
+                sort:1,
+                type:1,
+                demand:1
+            },{
+                id:1,
+                name:'信息系统综合实训',
+                hour:30,
+                credit:4,
+                tool:'用友ERP沙盘',
+                exam:'经营成果、分析报告',
+                sort:1,
+                type:1,
+                demand:1
+            },{
+                id:2,
+                name:'ERP实习',
+                hour:0,
+                credit:0,
+                tool:'SAP ERP或金蝶 K/3',
+                exam:'上机操作，实习报告',
+                sort:1,
+                type:1,
+                demand:1
+            },{
+                id:3,
+                name:'会计模拟实习',
+                hour:0,
+                credit:0,
+                tool:'用友ERP',
+                exam:'上机操作、实习报告',
+                sort:1,
+                type:1,
+                demand:1,
+            }
+        ]
+    }
+    else if(type === 'class'){
+        return [
+            {
+                id:1,
+                name:'信息管理与信息系统15-01',
+                year:'2015'
+            },{
+                id:2,
+                name:'信息管理与信息系统15-02',
+                year:'2015'
+            },{
+                id:3,
+                name:'信息管理与信息系统16-01',
+                year:'2016'
+            },{
+                id:4,
+                name:'信息管理与信息系统16-01',
+                year:'2016'
+            },{
+                id:5,
+                name:'信息管理与信息系统17-01',
+                year:'2017'
+            },{
+                id:6,
+                name:'信息管理与信息系统17-01',
+                year:'2017'
+            },
+        ]
+    }
+    else if(type === 'lab'){
+        return [
+            {
+                id:1,
+                name:'管理1号实验室',
+                address:'管理楼1号楼1403/1415',
+                principal:'',
+                remark:'管理1号实验室'
+            },
+            {
+                id:2,
+                name:'管理2号实验室',
+                address:'管理1号楼1415/1425',
+                principal:'',
+                remark:'管理2号实验室'
+            },{
+                id:3,
+                name:'管理3号实验室',
+                address:'管理1号楼1406',
+                principal:'',
+                remark:'管理3号实验室'
+            },
+        ]
+    }
+    else if (type == 'device'){
+        return [
+            {
+                id:0,
+                name:'ERP物理沙盘',
+                price:40000.0,
+                amount:1,
+                country:'中国',
+                supplier:'用友新通科技有限公司',
+                date:'2011.12'
+            },{
+                id:1,
+                name:'ERP电子沙盘',
+                price:40000.0,
+                amount:1,
+                country:'中国',
+                supplier:'用友新通科技有限公司',
+                date:'2011.12'
+            }
+        ]
+    }
+    else if(type == 'teacher'){
+        return [
+            {
+                id:0,
+                name:'杨颖',
+                userName:'yy',
+                password:'yy',
+                sex:'女',
+                birth:'1975-05-01',
+                degree:'博士',
+                position:'主任',
+                major:'信息管理',
+                worktime:'11',
+                duty:'',
+                fulltime:'',
+                department:'管理学院信息管理与信息系统系',
+                type:''
+            },{
+                id:0,
+                name:'余本功',
+                userName:'ybg',
+                password:'ybg',
+                sex:'男',
+                birth:'1971-12-01',
+                degree:'博士',
+                position:'教师',
+                major:'电子商务',
+                worktime:'10',
+                duty:'研究员',
+                fulltime:'',
+                department:'管理学院信息管理与信息系统系',
+                type:''
+            },
+        ]
+    }
+}
