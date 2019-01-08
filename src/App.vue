@@ -1,10 +1,9 @@
 <template>
   <div id="app">
-    <!--<div class="top">
+    <div class="top">
       <img src="./assets/hfut_03.png" height="50px" style="margin:10px"/>
     </div>
-    <router-view></router-view>-->
-    <cl/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -12,10 +11,8 @@
 //import course from "./components/teacher/course/cour-*/se2"
 //import course from  "./components/admin/course"
 //import cl from "./components/admin/class"
-import cl from "./components/admin/course"
 export default {
   name: 'app',
-  components: {cl}
 
 }
 </script>
@@ -23,6 +20,8 @@ export default {
 <style scoped>
 .top {
   background-image: url('./components/back.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
   width: 100%;
   height: 80px;
   background-color: #f1f1f1;
