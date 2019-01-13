@@ -39,7 +39,7 @@ axios.interceptors.response.use(
     }
 );
 
-let base = 'http://localhost';
+let base = 'http://212.64.22.148';
 export const postRequest = (url, params) => {
     return axios({
         method: 'post',
