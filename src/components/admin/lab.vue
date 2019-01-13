@@ -89,28 +89,39 @@
             }
         },
         methods:{
-            updateDialog:function (course) {
+            loadData: function () {
+                var _this = this;
+                this.getRequest('/admin/getLabInfo').then(resp => {
+                    if (resp && resp.status == 200) {
+                        _this.data=resp.data;
+                    }
+                })
+            },
+            updateDialog:function (lab) {
                 this.type='修改';
-                this.update = course;
+                this.update = lab;
                 this.updateVisible = true;
             },
-            updateCourse:function (course) {
-                //TODO 修改
+            updateCourse:function (lab) {
+                var _this = this;
                 if (this.type === "修改"){
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'修改成功',
-                        type:'success'
-                    })
+                    this.postRequest('/admin/updateLab',lab).then(resp => {
+                        _this.updateVisible = false;
+                        _this.$message({
+                            message:resp.data.msg,
+                            type:'success'
+                        });
+                    });
                 } else {
-                    this.data.push(course);
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'添加成功',
-                        type:'success'
-                    })
+                    this.postRequest('/admin/addLab',lab).then(resp => {
+                        _this.updateVisible = false;
+                        _this.$message({
+                            message:resp.data.msg,
+                            type:'success'
+                        });
+                    });
                 }
-
+                this.loadData();
             },
             add:function () {
                 this.type='添加';
@@ -126,6 +137,9 @@
 
                     });
             }
+        },
+        mounted() {
+            this.loadData();
         }
     }
 </script>

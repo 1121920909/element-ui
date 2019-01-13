@@ -23,53 +23,53 @@
                                 <template slot-scope="props">
                                     <el-form label-position="left" inline class="table-expand" label-suffix="：">
                                         <el-form-item label="课程名称">
-                                        <span>{{props.row.name}}</span>
+                                        <span>{{props.row.courseInfo.name}}</span>
                                         </el-form-item>
                                         <el-form-item label="任课教师">
-                                            <span>{{props.row.teacher}}</span>
+                                            <span>{{props.row.instructor.name}}</span>
                                         </el-form-item>
                                         <el-form-item label="指导老师">
-                                            <span>{{props.row.instructor.toString()}}</span>
+                                            <span>{{transformString(props.row.teacherList)}}</span>
                                         </el-form-item>
                                         <el-form-item label="班级">
-                                            <span>{{props.row.class.toString()}}</span>
+                                            <span>{{transformString(props.row.classList)}}</span>
                                         </el-form-item>
                                         <el-form-item label="课程类型">
-                                            <span>{{props.row.sort}}</span>
+                                            <span>{{props.row.courseInfo.sort}}</span>
                                         </el-form-item>
                                         <el-form-item label="课程类别">
-                                            <span>{{props.row.type}}</span>
+                                            <span>{{props.row.courseInfo.type}}</span>
                                         </el-form-item>
                                         <el-form-item label="课程要求">
-                                            <span>{{props.row.demand}}</span>
+                                            <span>{{props.row.courseInfo.require}}</span>
                                         </el-form-item>
                                         <el-form-item label="人数">
                                             <span>{{props.row.count}}</span>
                                         </el-form-item>
                                         <el-form-item label="学时">
-                                            <span>{{props.row.hour}}</span>
+                                            <span>{{props.row.courseInfo.hour}}</span>
                                         </el-form-item>
                                     </el-form>
                                 </template>
                             </el-table-column>
                             <el-table-column
-                                    prop="name"
+                                    prop="courseInfo.name"
                                     label="课程名称"
                                     width="200"></el-table-column>
                             <el-table-column
-                                    prop="teacher"
+                                    prop="instructor.name"
                                     label="任课教师"
                                     width="80"></el-table-column>
                             <el-table-column
-                                    prop="sort"
+                                    prop="courseInfo.sort"
                                     label="课程类型"
                                     width="80"></el-table-column>
                             <el-table-column
-                                    prop="type"
+                                    prop="courseInfo.type"
                                     label="课程类别"
                                     width="80"></el-table-column>
                             <el-table-column
-                                    prop="demand"
+                                    prop="courseInfo.require"
                                     label="课程要求"
                                     width="80"></el-table-column>
                             <el-table-column
@@ -77,11 +77,11 @@
                                     label="人数"
                                     width="80"></el-table-column>
                             <el-table-column
-                                    prop="hour"
+                                    prop="courseInfo.hour"
                                     label="学时"
                                     width="80"></el-table-column>
                             <el-table-column
-                                    prop="year"
+                                    prop="academicYear"
                                     label="学期"
                                     width="200"></el-table-column>
                         </el-table>
@@ -99,13 +99,13 @@
             <div class="add-dialog">
                 <el-form class="add-form" ref="form" :model="form" label-width="80px" label-position="right">
                     <el-form-item label="课程">
-                        <el-select v-model="form.name" placeholder="请选择课程">
-                            <el-option v-for="(course, index) in courseList" :key="index" :label="course" :value="course"></el-option>
+                        <el-select v-model="form.course" placeholder="请选择课程">
+                            <el-option v-for="(course, index) in courseList" :key="index" :label="course.name" :value="course.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="任课教师">
                         <el-select v-model="form.teacher" placeholder="请选择教师">
-                            <el-option v-for="(teacher, index) in teacherList" :key="index" :label="teacher" :value="teacher"></el-option>
+                            <el-option v-for="(teacher, index) in teacherList" :key="index" :label="teacher.name" :value="teacher.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="指导老师">
@@ -113,8 +113,8 @@
                             <el-option
                                 v-for="(teacher, index) in teacherList"
                                 :key="index"
-                                :label="teacher"
-                                :value="teacher"></el-option>
+                                :label="teacher.name"
+                                :value="teacher.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="班级">
@@ -122,8 +122,8 @@
                             <el-option
                                     v-for="(c, index) in classList"
                                     :key="index"
-                                    :label="c"
-                                    :value="c"></el-option>
+                                    :label="c.name"
+                                    :value="c.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="人数">
@@ -140,57 +140,57 @@
 </template>
 
 <script>
-    import data from '../data'
     export default {
         name: "course2",
-        data(){
+        data:function(){
             return{
-                data:data(),
+                data:[],
                 form:{
-                    name:'',
+                    course:'',
                     teacher:'',
-                    instructor:[],
                     class:[],
-                    sort:'',
-                    type:'',
-                    demand:'',
+                    academic_year:'2017-2018第二学期',
+                    instructor:[],
                     count: 0,
-                    hour: 0,
                 },
                 formDefault:{
-                    name:'',
+                    course:'',
                     teacher:'',
-                    instructor:[],
                     class:[],
-                    sort:'',
-                    type:'',
-                    demand:'',
+                    academic_year:'2017-2018第二学期',
+                    instructor:[],
                     count: 0,
-                    hour: 0,
                 },
                 dialogVisible:false,
-                courseList:[
-                    'ERP实验',
-                    'ERP',
-                    '商务数据分析',
-                    '程序设计语言'
-                ],
-                teacherList:[
-                    '白羽',
-                    '钟金宏',
-                    '靳鹏',
-                    '杨颖',
-                    '王刚'
-                ],
-                classList:[
-                    '信息管理15-1',
-                    '信息管理15-2',
-                    '电子商务15-1',
-                    '电子商务15-2'
-                ]
+                courseList:[],
+                teacherList:[],
+                classList:[]
             }
         },
         methods:{
+            loadData:function() {
+                var _this = this;
+                this.getRequest('/teacher/getAllCourse').then(resp => {
+                    if (resp && resp.status == 200) {
+                        _this.data = resp.data;
+                    }
+                });
+                this.getRequest('/teacher/getTeacher').then(resp => {
+                    if (resp && resp.status == 200) {
+                        _this.teacherList = resp.data;
+                    }
+                });
+                this.getRequest('/teacher/getCourseInfo').then(resp => {
+                    if (resp && resp.status == 200) {
+                        _this.courseList = resp.data;
+                    }
+                });
+                this.getRequest('/teacher/getClassInfo').then(resp => {
+                    if (resp && resp.status == 200) {
+                        _this.classList = resp.data;
+                    }
+                });
+            },
             openDialog:function () {
                 this.dialogVisible=true;
             },
@@ -204,14 +204,37 @@
                     });
             },
             onSubmit:function () {
-                this.data.push(this.form);
-                this.$message({
-                    message: '添加成功',
-                    type: 'success'
+                var _this = this;
+                this.postRequest("/teacher/addCourse",{
+                    courseInfoId:_this.form.course,
+                    academicYear:_this.form.academic_year,
+                    count:_this.form.count,
+                    instructorId:_this.form.teacher,
+                    classIds:_this.form.class,
+                    teacherIds:_this.form.instructor
+                }).then(resp => {
+                    if (resp && resp == 200) {
+                        _this.$message({
+                            message:resp.data.msg,
+                            type:'success'
+                        });
+                    }
                 });
                 this.form = this.formDefault;
                 this.dialogVisible = false;
+                this.loadData();
+            },
+            transformString:function (list) {
+                var temp = [];
+                var i = 0;
+                for (i; i<list.length;i++) {
+                    temp.push(list[i].name);
+                }
+                return temp.join();
             }
+        },
+        mounted() {
+            this.loadData();
         }
     }
 </script>

@@ -1,7 +1,7 @@
 export default ()=>{
     return [
         {
-            name:'Java高级应用课程设计\n',
+            name:'Java高级应用课程设计',
             teacher:'伍章俊',
             instructor:['伍章俊'],
             class:['信息管理16-1','信息管理16-2'],

@@ -74,12 +74,11 @@
 
 <script>
     import './common.css'
-    import data from './data'
     export default {
         name: "class",
         data(){
             return {
-                data:data('class'),
+                data:[],
                 update:{},
                 updateVisible:false,
                 addVisible:false,
@@ -87,6 +86,14 @@
             }
         },
         methods:{
+            loadData: function () {
+                var _this = this;
+                this.getRequest('/admin/getAllClass').then(resp=>{
+                    if (resp && resp.status == 200) {
+                        _this.data = resp.data;
+                    }
+                })
+            },
             updateDialog:function (c) {
                 this.type='修改';
                 this.update = c;
@@ -94,21 +101,29 @@
             },
             updateCourse:function (c) {
                 //TODO 修改
+                var _this = this;
                 if (this.type === "修改"){
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'修改成功',
-                        type:'success'
-                    })
+                    this.postRequest('/admin/updateClass',c).then(resp=>{
+                       if (resp && resp.status == 200){
+                           _this.updateVisible=false;
+                           _this.$message({
+                               message:resp.data.msg,
+                               type:'success'
+                           });
+                       }
+                    });
                 } else {
-                    this.data.push(c);
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'添加成功',
-                        type:'success'
-                    })
+                    this.postRequest('/admin/addClass',c).then(resp=>{
+                        if (resp && resp.status == 200){
+                            _this.updateVisible=false;
+                            _this.$message({
+                                message:resp.data.msg,
+                                type:'success'
+                            })
+                        }
+                    });
                 }
-
+                _this.loadData();
             },
             add:function () {
                 this.type='添加';
@@ -124,6 +139,9 @@
 
                     });
             }
+        },
+        mounted() {
+            this.loadData();
         }
     }
 </script>

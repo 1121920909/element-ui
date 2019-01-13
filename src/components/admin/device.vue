@@ -99,7 +99,7 @@
         name: "device",
         data(){
             return {
-                data:data('device'),
+                data:[],
                 update:{},
                 updateVisible:false,
                 addVisible:false,
@@ -107,28 +107,44 @@
             }
         },
         methods:{
-            updateDialog:function (course) {
+            loadData: function () {
+                var _this = this;
+                this.getRequest('/admin/getAllDeviceInfo').then(reps=>{
+                    if (reps && reps.status == 200) {
+                        _this.data = reps.data;
+                    }
+                })
+            },
+            updateDialog:function (device) {
                 this.type='修改';
-                this.update = course;
+                this.update = device;
                 this.updateVisible = true;
             },
-            updateCourse:function (course) {
+            updateCourse:function (device) {
                 //TODO 修改
+                var _this = this;
                 if (this.type === "修改"){
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'修改成功',
-                        type:'success'
-                    })
+                    this.postRequest('/admin/updateDevice',device).then(resp=>{
+                        if (resp && resp.status == 200){
+                            _this.updateVisible=false;
+                            _this.$message({
+                                message:resp.data.msg,
+                                type:'success'
+                            });
+                        }
+                    });
                 } else {
-                    this.data.push(course);
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'添加成功',
-                        type:'success'
-                    })
+                    this.postRequest('/admin/addDevice',device).then(resp=>{
+                        if (resp && resp.status == 200){
+                            _this.updateVisible=false;
+                            _this.$message({
+                                message:resp.data.msg,
+                                type:'success'
+                            })
+                        }
+                    });
                 }
-
+                _this.loadData();
             },
             add:function () {
                 this.type='添加';
@@ -144,6 +160,9 @@
 
                     });
             }
+        },
+        mounted() {
+            this.loadData();
         }
     }
 </script>

@@ -135,12 +135,11 @@
 
 <script>
     import './common.css'
-    import data from './data'
     export default {
         name: "course",
         data(){
             return {
-                data:data('teacher'),
+                data:[],
                 update:{},
                 updateVisible:false,
                 addVisible:false,
@@ -164,28 +163,43 @@
             }
         },
         methods:{
-            updateDialog:function (course) {
+            loadData: function () {
+                var _this = this;
+                this.getRequest('/admin/getAllTeacher').then(resp => {
+                    if (resp && resp.status == 200) {
+                        _this.data = resp.data;
+                    }
+                })
+            },
+            updateDialog:function (teacher) {
                 this.type='修改';
-                this.update = course;
+                this.update = teacher;
                 this.updateVisible = true;
             },
-            updateCourse:function (course) {
-                //TODO 修改
+            updateCourse:function (teacher) {
+                var _this = this;
                 if (this.type === "修改"){
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'修改成功',
-                        type:'success'
+                    this.postRequest('/admin/updateTeacher',teacher).then(resp => {
+                        if (resp && resp.status == 200) {
+                            _this.updateVisible = false;
+                            _this.$message({
+                                message:resp.data.msg,
+                                type: 'success'
+                            });
+                        }
                     })
                 } else {
-                    this.data.push(course);
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'添加成功',
-                        type:'success'
+                    this.postRequest('/admin/addTeacher',teacher).then(resp => {
+                        if (resp && resp.status == 200) {
+                            _this.updateVisible = false;
+                            _this.$message({
+                                message:resp.data.msg,
+                                type: 'success'
+                            });
+                        }
                     })
                 }
-
+                this.loadData();
             },
             add:function () {
                 this.type='添加';

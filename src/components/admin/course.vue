@@ -26,7 +26,7 @@
                             width="200">
                         </el-table-column>
                         <el-table-column
-                            prop="hour"
+                            prop="hours"
                             label="学时"></el-table-column>
                         <el-table-column
                             prop="credit"
@@ -46,7 +46,7 @@
                             prop="type"
                             label="实验类型"></el-table-column>
                         <el-table-column
-                            prop="demand"
+                            prop="require"
                             label="实验要求"></el-table-column>
                         <el-table-column
                             fixed="right"
@@ -71,7 +71,7 @@
                         <el-input v-model="update.name" placeholder="请输入课程名称"></el-input>
                     </el-form-item>
                     <el-form-item label="学时:">
-                        <el-input-number v-model="update.hour"></el-input-number>
+                        <el-input-number v-model="update.hours"></el-input-number>
                     </el-form-item>
                     <el-form-item label="学分:">
                         <el-input-number v-model="update.credit"></el-input-number>
@@ -86,48 +86,48 @@
                         <el-select v-model="update.sort" placeholder="请选择">
                             <el-option
                                 label="1-基础"
-                                value="1"></el-option>
+                                value="1-基础"></el-option>
                             <el-option
                                 label="2-专业基础"
-                                value="2"></el-option>
+                                value="2-专业基础"></el-option>
                             <el-option
                                 label="3-专业"
-                                value="3"></el-option>
+                                value="3-专业"></el-option>
                             <el-option
                                 label="4-其他"
-                                value="4"></el-option>
+                                value="4-其他"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="实验类型:">
                         <el-select v-model="update.type" placeholder="请选择">
                             <el-option
                                     label="1-演示型"
-                                    value="1"></el-option>
+                                    value="1-演示型"></el-option>
                             <el-option
                                     label="2-验证型"
-                                    value="2"></el-option>
+                                    value="2-验证型"></el-option>
                             <el-option
                                     label="3-综合型"
-                                    value="3"></el-option>
+                                    value="3-综合型"></el-option>
                             <el-option
                                     label="4-设计研究"
-                                    value="4"></el-option>
+                                    value="4-设计研究"></el-option>
                             <el-option
                                     label="5-其他"
-                                    value="5"></el-option>
+                                    value="5-其他"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="实验要求:">
-                        <el-select v-model="update.demand" placeholder="请选择">>
+                        <el-select v-model="update.require" placeholder="请选择">>
                             <el-option
                                     label="1-必修"
-                                    value="1"></el-option>
+                                    value="1-必修"></el-option>
                             <el-option
                                     label="2-选修"
-                                    value="2"></el-option>
+                                    value="2-选修"></el-option>
                             <el-option
                                     label="3-其他"
-                                    value="3"></el-option>
+                                    value="3-其他"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-form>
@@ -142,12 +142,11 @@
 
 <script>
     import './common.css'
-    import data from './data'
     export default {
         name: "course",
         data(){
             return {
-                data:data('course'),
+                data:[],
                 update:{},
                 updateVisible:false,
                 addVisible:false,
@@ -155,28 +154,45 @@
             }
         },
         methods:{
+            loadData:function(){
+                var _this = this;
+                this.getRequest("/admin/getAllCourseInfo").then(resp=>{
+                    if (resp && resp.status == 200) {
+                        _this.data = resp.data;
+                    }
+                })
+            },
             updateDialog:function (course) {
                 this.type='修改';
                 this.update = course;
                 this.updateVisible = true;
             },
             updateCourse:function (course) {
-                //TODO 修改
+                var _this = this;
                 if (this.type === "修改"){
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'修改成功',
-                        type:'success'
-                    })
+                    this.postRequest('/admin/updateCourseInfo',course).then(resp=>{
+                        _this.updateVisible = false;
+                        if (resp && resp.status == 200) {
+                            _this.$message({
+                                message:resp.data.data,
+                                type:'success'
+                            });
+                            _this.loadData();
+                        }
+                    });
                 } else {
-                    this.data.push(course);
-                    this.updateVisible=false;
-                    this.$message({
-                        message:'添加成功',
-                        type:'success'
+                    this.postRequest('/admin/addCourseInfo',course).then(resp=>{
+                        _this.updateVisible = false;
+                        if (resp && resp.status == 200){
+                            _this.$message({
+                                message:resp.data.data,
+                                type:'success'
+                            });
+                            _this.update = {};
+                            _this.loadData();
+                        }
                     })
                 }
-
             },
             add:function () {
                 this.type='添加';
@@ -192,6 +208,9 @@
 
                     });
             }
+        },
+        mounted() {
+            this.loadData();
         }
     }
 </script>

@@ -9,7 +9,6 @@ import Device from './components/device/Device'
 import Teach from './components/teach/Teach'
 import Index from './components/index'
 import Teacher from './components/teacher'
-//import Course from './components/teacher/course/course'
 import Course from './components/teacher/course/course2'
 import classInfo from './components/admin/class'
 import courseInfo from  './components/admin/course'
@@ -17,6 +16,11 @@ import deviceInfo from  './components/admin/device'
 import labInfo from './components/admin/lab'
 import userInfo from './components/admin/user'
 import Admin from './components/admin'
+import Reserve from './components/teacher/reserve/reserve'
+import {getRequest} from './utils/api'
+import {postRequest} from './utils/api'
+Vue.prototype.getRequest = getRequest;
+Vue.prototype.postRequest = postRequest;
 const routes = [
   {
     path: '/index', component: Index,
@@ -29,9 +33,10 @@ const routes = [
     ]
   },
   {
-    path: '/teacher',component: Teacher,
+    path: '/',component: Teacher,
     children: [
-      {path: '', name: 'course', component: Course}
+      {path: '', name: 'course', component: Course},
+      {path:'reserve',name:'reserve',component: Reserve}
     ]
   },
   {
